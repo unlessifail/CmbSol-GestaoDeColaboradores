@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMob Solutions - Gestão de Colaboradores</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: #434343;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #444444;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            flex-direction: column;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            color: white;
+            background-color: gray;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: 200px;
+        }
+        .option-btn:hover {
+            background-color: darkgray;
+        }
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #DC3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CMob Solutions</h1>
+        <p>Sistema de Gestão de Colaboradores</p>
+    </div>
+    
+    <div class="container">
+        <h2>Bem-vindo, {{ username }}!</h2> <!-- Exibe o nome do moderador logado -->
+        
+        <div class="options">
+            <button class="option-btn" onclick="window.location.href='/visualizar_funcionarios'">Visualizar Colaboradores</button>
+            <button class="option-btn" onclick="window.location.href='/add-funcionario'">Adicionar Colaborador</button>
+            <button class="option-btn" onclick="window.location.href='/edit_funcionario'">Editar Colaborador</button>
+        </div>
+
+        <button class="logout-btn" onclick="window.location.href='/logout'">Sair</button>
+    </div>
+</body>
+</html>

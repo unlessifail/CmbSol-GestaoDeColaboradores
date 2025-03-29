@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMob Solutions - Visualizar Colaboradores</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #434343;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #444444;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            flex-direction: column;
+        }
+        .search-box {
+            display: flex;
+            flex-direction: column; /* Alterado para empilhar os itens verticalmente */
+            align-items: center;
+            gap: 15px; /* Espaço entre os itens */
+        }
+        input {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-btn, .back-btn {
+            padding: 10px 20px;
+            background-color: gray;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-btn:hover, .back-btn:hover {
+            background-color: darkgray;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CMob Solutions</h1>
+        <p>Visualizar Colaboradores</p>
+    </div>
+    
+    <div class="container">
+        <h2>Moderador: {{ username }}</h2>
+        
+        <div class="search-box">
+            <!-- Caixa de Pesquisa -->
+            <label for="search">Buscar Colaborador</label>
+            <input type="text" id="search" placeholder="Matrícula ou CPF">
+            
+            <!-- Botões abaixo da pesquisa -->
+            <button class="search-btn" onclick="buscarColaborador()">Buscar</button>
+            <button class="back-btn" onclick="window.location.href='/main'">Voltar</button>
+        </div>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        function buscarColaborador() {
+            const searchValue = document.getElementById('search').value;
+            const resultDiv = document.getElementById('result');
+            
+            // Enviar requisição para o servidor para buscar o colaborador
+            fetch(`/buscar_funcionario?search_value=${searchValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        resultDiv.innerHTML = `${data.message} <br><a href="${data.pdf_url}" target="_blank">Baixar Dados</a>`;
+                        resultDiv.className = "result success";
+                    } else {
+                        resultDiv.innerHTML = data.message;
+                        resultDiv.className = "result error";
+                    }
+                    resultDiv.style.display = "block";
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = "Erro ao buscar colaborador.";
+                    resultDiv.className = "result error";
+                    resultDiv.style.display = "block";
+                });
+        }
+    </script>
+</body>
+</html>

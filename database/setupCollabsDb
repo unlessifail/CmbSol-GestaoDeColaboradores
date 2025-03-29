@@ -1,0 +1,108 @@
+import sqlite3
+
+def criar_bd():
+    # Cria a conexão com o banco de dados
+    conn = sqlite3.connect("colaboradores.db")
+    cursor = conn.cursor()
+
+    # Cria a tabela de funcionários, caso ela não exista
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS funcionarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            data_nascimento TEXT,
+            cpf TEXT UNIQUE,
+            rg TEXT,
+            orgao_emissor TEXT,
+            estado_civil TEXT,
+            nacionalidade TEXT,
+            nome_mae TEXT,
+            nome_pai TEXT,
+            endereco TEXT,
+            telefone TEXT,
+            email TEXT,
+            cargo TEXT,
+            departamento TEXT,
+            data_admissao TEXT,
+            matricula TEXT,
+            tipo_contrato TEXT,
+            salario_base REAL,
+            banco TEXT,
+            agencia TEXT,
+            conta TEXT,
+            carteira_trabalho_numero TEXT,
+            carteira_trabalho_serie TEXT,
+            carteira_trabalho_data_emissao TEXT,
+            escolaridade TEXT,
+            cursos_relevantes TEXT,
+            certificacoes TEXT,
+            historico_profissional TEXT,
+            login TEXT UNIQUE,
+            senha TEXT,
+            foto TEXT,
+            documentos TEXT,
+            emergencia_nome TEXT,
+            emergencia_telefone TEXT,
+            tipo_sanguineo TEXT,
+            pis_pasep TEXT,
+            titulo_eleitor TEXT,
+            cnh TEXT
+        )
+    ''')
+
+    return conn, cursor
+
+def verificar_cpfs_unicos(funcionarios):
+    # Pega todos os CPFs para verificar duplicidade
+    cpfs = [funcionario[2] for funcionario in funcionarios]
+    cpfs_duplicados = [cpf for cpf in cpfs if cpfs.count(cpf) > 1]
+
+    # Se houver CPFs duplicados, retorna False e imprime os duplicados
+    if cpfs_duplicados:
+        print(f"CPFs duplicados encontrados: {set(cpfs_duplicados)}")
+        return False
+    return True
+
+def inserir_funcionarios(cursor, funcionarios):
+    # Insere os funcionários na tabela, ignorando CPFs duplicados
+    cursor.executemany('''
+        INSERT OR IGNORE INTO funcionarios (
+            nome, data_nascimento, cpf, rg, orgao_emissor, estado_civil, nacionalidade, nome_mae, nome_pai,
+            endereco, telefone, email, cargo, departamento, data_admissao, matricula, tipo_contrato, salario_base,
+            banco, agencia, conta, carteira_trabalho_numero, carteira_trabalho_serie, carteira_trabalho_data_emissao,
+            escolaridade, cursos_relevantes, certificacoes, historico_profissional, login, senha, foto, documentos,
+            emergencia_nome, emergencia_telefone, tipo_sanguineo, pis_pasep, titulo_eleitor, cnh
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ''', funcionarios)
+
+def main():
+    funcionarios = [
+        ("Ana Pereira", "1990-07-22", "987.654.321-00", "45.678.910", "SSP-RJ", "Casada", "Brasileira", "Clara Pereira", "Carlos Pereira", "Rua B, 456", "98877-6655", "ana@empresa.com", "Gerente", "Vendas", "2012-04-18", "5678", "CLT", 5500.00, "Banco Y", "3456", "789123", "98765", "AB", "2012-04-18", "Administração", "Gestão de Vendas", "Certificação em Vendas", "Empresa B - 2012-2020", "ana_pereira", "senha_encriptada", "foto2.jpg", "RG, CPF, CTPS", "Lucas Pereira", "98877-6655", "A+", "987654321", "654321", "9876543210"),
+        ("Carlos Souza", "1982-11-05", "543.210.987-01", "56.789.012", "SSP-MG", "Solteiro", "Brasileiro", "Maria Souza", "João Souza", "Avenida C, 789", "99888-5544", "carlos@empresa.com", "Supervisor", "Financeiro", "2014-09-30", "4321", "PJ", 7000.00, "Banco Z", "5678", "987654", "12345", "O-", "2014-09-30", "Economia", "Finanças Corporativas", "MBA em Finanças", "Empresa C - 2014-2021", "carlos_souza", "senha_encriptada", "foto3.jpg", "RG, CPF, CTPS", "Fernanda Souza", "99888-5544", "O-", "123456789", "987654", "1234567890"),
+        ("Juliana Martins", "1984-01-09", "321.987.654-00", "56.789.012", "SSP-SP", "Casada", "Brasileira", "Ana Martins", "João Martins", "Rua H, 890", "93666-7788", "juliana@empresa.com", "Assistente", "Financeiro", "2017-08-20", "3456", "CLT", 3200.00, "Banco W", "5678", "987654", "67890", "AB", "2017-08-20", "Contabilidade", "Análise Financeira", "Certificação Contábil", "Empresa H - 2017-2020", "juliana_martins", "senha_encriptada", "foto8.jpg", "RG, CPF, CTPS", "Pedro Martins", "93666-7788", "B+", "987654321", "765432", "9876543210"),
+        ("Gustavo Rocha", "1993-12-03", "234.567.890-00", "67.890.123", "SSP-MG", "Solteiro", "Brasileiro", "Luciana Rocha", "Roberto Rocha", "Avenida I, 123", "93777-8899", "gustavo@empresa.com", "Analista", "Logística", "2019-02-14", "4321", "CLT", 4500.00, "Banco X", "6789", "345678", "23456", "A-", "2019-02-14", "Logística", "Gestão de Suprimentos", "Certificação Logística", "Empresa I - 2019-2021", "gustavo_rocha", "senha_encriptada", "foto9.jpg", "RG, CPF, CTPS", "Mariana Rocha", "93777-8899", "O+", "987654321", "654321", "9876543210"),
+        ("Patrícia Silva", "1991-06-11", "876.543.210-00", "23.456.789", "SSP-PR", "Solteira", "Brasileira", "Cláudia Silva", "Fernando Silva", "Rua J, 234", "93888-9900", "patricia@empresa.com", "Coordenadora", "Vendas", "2014-09-08", "5432", "PJ", 6500.00, "Banco Y", "1234", "678901", "54321", "AB", "2014-09-08", "Marketing", "Gestão Comercial", "MBA em Vendas", "Empresa J - 2014-2021", "patricia_silva", "senha_encriptada", "foto10.jpg", "RG, CPF, CTPS", "Carlos Silva", "93888-9900", "B-", "987654321", "876543", "9876543210"),
+        ("Ricardo Lima", "1986-04-17", "567.890.123-00", "12.345.678", "SSP-SP", "Casado", "Brasileiro", "Renata Lima", "José Lima", "Rua K, 345", "93999-0011", "ricardo@empresa.com", "Supervisor", "TI", "2012-08-30", "6543", "CLT", 6200.00, "Banco Z", "2345", "567890", "67890", "O-", "2012-08-30", "Sistemas", "Infraestrutura", "Certificação Linux", "Empresa K - 2012-2019", "ricardo_lima", "senha_encriptada", "foto11.jpg", "RG, CPF, CTPS", "Marcio Lima", "93999-0011", "A+", "987654321", "543210", "9876543210"),
+        ("Beatriz Santos", "1994-09-10", "123.456.789-00", "34.567.890", "SSP-RJ", "Solteira", "Brasileira", "Carla Santos", "André Santos", "Rua L, 456", "94000-1122", "beatriz@empresa.com", "Desenvolvedora", "TI", "2017-01-05", "7654", "CLT", 5500.00, "Banco W", "3456", "890123", "12345", "B+", "2017-01-05", "Engenharia de Software", "Java e Python", "Certificação Java", "Empresa L - 2017-2021", "beatriz_santos", "senha_encriptada", "foto12.jpg", "RG, CPF, CTPS", "Felipe Santos", "94000-1122", "O-", "987654321", "765432", "9876543210"),
+        ("Renato Costa", "1990-08-25", "432.109.876-00", "56.789.012", "SSP-SP", "Casado", "Brasileiro", "Eliana Costa", "Pedro Costa", "Rua M, 567", "94111-2233", "renato@empresa.com", "Coordenador", "TI", "2014-04-20", "8765", "CLT", 7000.00, "Banco X", "2345", "678901", "54321", "AB", "2014-04-20", "Ciências da Computação", "Arquitetura de Sistemas", "MBA em TI", "Empresa M - 2014-2020", "renato_costa", "senha_encriptada", "foto13.jpg", "RG, CPF, CTPS", "Paulo Costa", "94111-2233", "A+", "987654321", "876543", "9876543210"),
+        ("Simone Oliveira", "1983-12-30", "543.210.987-00", "12.345.678", "SSP-SP", "Divorciada", "Brasileira", "Márcia Oliveira", "Carlos Oliveira", "Rua N, 678", "94222-3344", "simone@empresa.com", "Analista", "Comercial", "2011-11-15", "9876", "CLT", 3800.00, "Banco Y", "1234", "567890", "98765", "O+", "2011-11-15", "Administração", "Gestão Comercial", "MBA em Marketing", "Empresa N - 2011-2020", "simone_oliveira", "senha_encriptada", "foto14.jpg", "RG, CPF, CTPS", "João Oliveira", "94222-3344", "B-", "987654321", "123456", "9876543210"),
+
+    ]
+
+    # Cria o banco de dados e o cursor
+    conn, cursor = criar_bd()
+
+    # Verifica se todos os CPFs são únicos
+    if verificar_cpfs_unicos(funcionarios):
+        # Se CPFs são únicos, insere os funcionários na tabela
+        inserir_funcionarios(cursor, funcionarios)
+        conn.commit()  # Confirma a transação
+        print("Banco de dados de colaboradores criado e populado com sucesso!")
+    else:
+        print("Erro: Existem CPFs duplicados. Corrija antes de tentar novamente.")
+    
+    # Fecha a conexão com o banco de dados
+    conn.close()
+
+if __name__ == "__main__":
+    main()
