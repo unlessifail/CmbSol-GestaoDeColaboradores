@@ -43,20 +43,27 @@ Para executar o projeto localmente, siga os passos abaixo:
 
 Navegue até o diretório do projeto:
 
+
 cd CmbSol-GestaoDeColaboradores
 
-Crie um ambiente virtual (opcional, mas recomendado):
+## Crie um ambiente virtual (opcional, mas recomendado):
 
 python3 -m venv venv
 source venv/bin/activate  # No Windows use: venv\Scripts\activate
 
-Instale as dependências:
+## Instale as dependências:
 
 pip install -r requirements.txt
 
-Configure o banco de dados
+## Configure o banco de dados
 
-Como Usar
+Basta editar os arquivos:
+
+setupCollabsDb (Banco de dados para os funcionários)
+
+setupModsDb (Banco para os moderadores/profissionais capazes de gerir os colaboradores)
+
+## Como Usar
 
 Acesse a aplicação no navegador através do endereço http://127.0.0.1:8080/.
 
@@ -68,7 +75,7 @@ Para editar um colaborador existente, clique no botão "Editar" ao lado do respe
 
 Para remover um colaborador, clique no botão "Excluir" ao lado do respectivo colaborador na lista e confirme a remoção.
 
-Contribuindo
+## Contribuindo
 
 Contribuições são bem-vindas! Se você deseja contribuir com o projeto, siga os passos abaixo:
 
@@ -86,11 +93,11 @@ Envie para o branch principal:
 git push origin minha-nova-feature
 Abra um Pull Request.
 
-Licença
+## Licença
 
 Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
-Contato
+## Contato
 
 Para mais informações ou dúvidas, entre em contato:
 
