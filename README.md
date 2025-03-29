@@ -44,6 +44,7 @@ Para executar o projeto localmente, siga os passos abaixo:
 Navegue até o diretório do projeto:
 
 cd CmbSol-GestaoDeColaboradores
+
 Crie um ambiente virtual (opcional, mas recomendado):
 
 python3 -m venv venv
@@ -54,6 +55,7 @@ pip install -r requirements.txt
 Configure o banco de dados
 
 Como Usar
+
 Acesse a aplicação no navegador através do endereço http://127.0.0.1:8080/.
 
 Na página inicial, você verá a lista de colaboradores cadastrados.
