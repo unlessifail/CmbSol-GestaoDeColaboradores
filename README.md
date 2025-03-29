@@ -49,9 +49,11 @@ Crie um ambiente virtual (opcional, mas recomendado):
 
 python3 -m venv venv
 source venv/bin/activate  # No Windows use: venv\Scripts\activate
+
 Instale as dependências:
 
 pip install -r requirements.txt
+
 Configure o banco de dados
 
 Como Usar
@@ -67,6 +69,7 @@ Para editar um colaborador existente, clique no botão "Editar" ao lado do respe
 Para remover um colaborador, clique no botão "Excluir" ao lado do respectivo colaborador na lista e confirme a remoção.
 
 Contribuindo
+
 Contribuições são bem-vindas! Se você deseja contribuir com o projeto, siga os passos abaixo:
 
 Fork este repositório.
@@ -74,6 +77,7 @@ Fork este repositório.
 Crie uma branch para a sua feature:
 
 git checkout -b minha-nova-feature
+
 Faça commit das suas alterações:
 
 git commit -m 'Adiciona nova funcionalidade'
@@ -83,9 +87,11 @@ git push origin minha-nova-feature
 Abra um Pull Request.
 
 Licença
+
 Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
 Contato
+
 Para mais informações ou dúvidas, entre em contato:
 
 Autor: Kalil de Macedo Santos
